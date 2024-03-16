@@ -1,9 +1,14 @@
+/*
+    3-Я ПРОСЛОЙКА - УРОВЕНЬ ДОСТУПА К ДАННЫМ (DATA ACCESS LAYER)
+*/
+
+
 import {HeadphoneCollection} from "./dataBase";
 import {HeadphoneType} from "../DBSettings/dbSettings";
 import {HTTP_STATUSES} from "../utils";
 
 export const headphonesRepository = {
-    async findHeadphone(title: any): Promise<HeadphoneType[]> {
+    async findHeadphone(title: string): Promise<HeadphoneType[]> {
         const filter: any = {}
         if(title) {
             filter.title = {$regex: title}
@@ -11,7 +16,7 @@ export const headphonesRepository = {
 
         return HeadphoneCollection.find(filter).toArray()
     },
-    async findHeadphoneByID(name: string) {
+    async findHeadphoneByName(name: string) {
         let headphones = await HeadphoneCollection.findOne({name: name})
         return headphones
     },
