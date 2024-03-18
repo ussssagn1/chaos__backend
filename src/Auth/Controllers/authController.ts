@@ -2,6 +2,8 @@ import {db, usersCollection} from "../../repositories/dataBase";
 import {Request, Response} from "express";
 import bcrypt from 'bcrypt'
 import jwt, {Secret} from 'jsonwebtoken'
+import {ObjectId} from "mongodb";
+
 export const getRegisterController = async (req: Request, res: Response) => {
     try {
         const { username, password } = req.body;
@@ -59,8 +61,20 @@ export const getLoginController = async (req: Request, res: Response) => {
 
 export const getMeController = async (req: Request, res: Response) => {
     try {
+        const userId: string = (req as any).userId; // Предполагается, что userId является строкой
 
+        const userIdObject = new ObjectId(userId); // Преобразуем строку userId в ObjectId
+
+        const user = await usersCollection.findOne({ _id: userIdObject });
+
+        if (!user) {
+            return res.status(401).json({ message: 'Такого пользователя не существует' });
+        }
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET as Secret, { expiresIn: '30d' });
+
+        res.json({ user, token });
     } catch (e) {
-
+        res.json({ message: "нет доступа" });
     }
-}
+};
