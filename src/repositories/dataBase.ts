@@ -1,5 +1,5 @@
 import {MongoClient} from "mongodb";
-import {HeadphoneType} from "../DBSettings/dbSettings";
+import {HeadphoneType, UsersType} from "../DBSettings/dbSettings";
 
 const mongoURI = process.env.mongoURI || 'mongodb://0.0.0.0:27017';
 
@@ -7,6 +7,7 @@ export const client = new MongoClient(mongoURI);
 export const db = client.db('headphones');
 
 export const HeadphoneCollection = db.collection<HeadphoneType>('headphone');
+export const usersCollection = db.collection<UsersType>('users');
 
 export async function startDB () {
     try {

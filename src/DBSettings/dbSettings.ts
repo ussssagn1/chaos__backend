@@ -5,3 +5,8 @@ export type HeadphoneType = {
     color: string,
     company: string
 }
+
+export type UsersType = {
+    username: string,
+    password: string,
+}

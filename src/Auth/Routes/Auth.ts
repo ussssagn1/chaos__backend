@@ -8,7 +8,7 @@ export const getAuthRouter = () => {
     authRouter.post('/register', getRegisterController)
 
     // Login
-    authRouter.get('/login', getLoginController)
+    authRouter.post('/login', getLoginController)
 
     // Get me
     authRouter.get('/me', getMeController)
