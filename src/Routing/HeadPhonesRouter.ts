@@ -4,7 +4,6 @@
 
 import express from "express";
 import {HTTP_STATUSES} from "../utils";
-import {headphonesRepository} from "../repositories/headphonesRepoDB";
 import {headphoneService} from "../domain/headphones-service";
 
 
@@ -12,10 +11,19 @@ export const getHeadphonesRouter = () => {
     const headphonesRouter = express.Router();
 
     headphonesRouter.get('/', async (req, res) => {
-        const headphones = headphoneService.findHeadphone(req.query.title);
-        const foundHeadphones = await headphones
-        res.status(HTTP_STATUSES.OK_200).send(foundHeadphones)
-    })
+        const title: string | undefined = req.query.title as string | undefined;
+        const company = req.query.company as string;
+        const sortBy: string = req.query.sortBy as string || '_id';
+        const sortOrder: number = parseInt(req.query.sortOrder as string) || 1;
+
+        try {
+            const foundHeadphones = await headphoneService.findHeadphone(title, company, sortBy, sortOrder);
+            res.status(HTTP_STATUSES.OK_200).send(foundHeadphones);
+        } catch (error) {
+            console.error('Error fetching data', error);
+            res.status(HTTP_STATUSES.INTERNAL_SERVER_ERROR_500).send({ error: 'Error fetching data' });
+        }
+    });
 
     headphonesRouter.get('/:name', async (req, res) => {
         const foundHeadphone = await headphoneService.findHeadphoneByName(req.params.name);

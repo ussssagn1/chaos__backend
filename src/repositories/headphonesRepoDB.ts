@@ -6,19 +6,25 @@
 import {HeadphoneCollection} from "./dataBase";
 import {HeadphoneType} from "../DBSettings/dbSettings";
 import {HTTP_STATUSES} from "../utils";
+import { Sort} from "mongodb";
 
 export const headphonesRepository = {
-    async findHeadphone(title: string): Promise<HeadphoneType[]> {
-        const filter: any = {}
-        if(title) {
-            filter.title = {$regex: title}
+    async findHeadphone(title: string | undefined, company: string, sortBy: string, sortOrder: any): Promise<HeadphoneType[]> {
+        const filter: any = {};
+        if (title) {
+            filter.title = { $regex: title };
+        }
+        if (company) {
+            filter.company = company;
         }
 
-        return HeadphoneCollection.find(filter).toArray()
+        const sortOptions: Sort = {};
+        sortOptions[sortBy] = sortOrder;
+
+        return await HeadphoneCollection.find(filter).sort(sortOptions).toArray();
     },
     async findHeadphoneByName(name: string) {
-        let headphones = await HeadphoneCollection.findOne({name: name})
-        return headphones
+        return await HeadphoneCollection.findOne({name: name})
     },
     async createHeadphone(createdHeadphone: HeadphoneType) {
         await HeadphoneCollection.insertOne(createdHeadphone)

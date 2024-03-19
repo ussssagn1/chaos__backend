@@ -4,11 +4,12 @@
 
 
 import {headphonesRepository} from "../repositories/headphonesRepoDB";
+
 import {HeadphoneType} from "../DBSettings/dbSettings";
 
 export const headphoneService = {
-    async findHeadphone (title: any) {
-        return headphonesRepository.findHeadphone(title)
+    async findHeadphone(title: string | undefined, company: string, sortBy: string, sortOrder: number): Promise<HeadphoneType[]> {
+        return headphonesRepository.findHeadphone(title, company, sortBy, sortOrder);
     },
     async findHeadphoneByName(name: string) {
         return headphonesRepository.findHeadphoneByName(name)
