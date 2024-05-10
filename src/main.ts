@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000
 
 const startApp = async () => {
     await startDB();
-    app.use(cors())
+    console.log('CORS ACTIVE')
     app.listen(PORT, () => {
         console.log(`Example app listening on port: http://localhost:${PORT}`)
     })
