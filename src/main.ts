@@ -1,8 +1,7 @@
 import {app} from "./app";
 import {startDB} from "./repositories/dataBase";
 import dotenv from 'dotenv'
-
-const cors = require("cors");
+import cors from 'cors'
 
 dotenv.config()
 
